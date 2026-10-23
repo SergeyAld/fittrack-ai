@@ -1,0 +1,90 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  body {
+    @apply bg-forest-950 text-white font-sans antialiased;
+    overscroll-behavior-y: none;
+  }
+
+  * {
+    -webkit-user-select: none;
+    user-select: none;
+  }
+
+  input,
+  textarea {
+    -webkit-user-select: text;
+    user-select: text;
+  }
+
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    @apply bg-forest-600 rounded-full;
+  }
+}
+
+@layer components {
+  .card {
+    @apply bg-forest-900/70 backdrop-blur-sm border border-forest-700/60 rounded-3xl;
+  }
+
+  .card-hover {
+    @apply transition-all duration-200 hover:border-lime-400/40 hover:bg-forest-800/70;
+  }
+
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 font-semibold rounded-2xl transition-all duration-200 active:scale-[0.97] disabled:opacity-40 disabled:active:scale-100;
+  }
+
+  .btn-primary {
+    @apply btn bg-lime-400 text-forest-950 hover:bg-lime-300;
+  }
+
+  .btn-secondary {
+    @apply btn bg-forest-700 text-white hover:bg-forest-600 border border-forest-600/60;
+  }
+
+  .btn-ghost {
+    @apply btn bg-transparent text-gray-300 hover:text-white hover:bg-forest-800;
+  }
+
+  .input {
+    @apply w-full bg-forest-800/80 border border-forest-700 rounded-2xl px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-lime-400/60 focus:ring-2 focus:ring-lime-400/20 transition-colors;
+  }
+
+  .chip {
+    @apply inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm font-medium transition-all duration-200;
+  }
+
+  .chip-off {
+    @apply chip bg-forest-800 text-gray-400 border border-forest-700;
+  }
+
+  .chip-on {
+    @apply chip bg-lime-400/15 text-lime-300 border border-lime-400/40;
+  }
+}
+
+.text-balance {
+  text-wrap: balance;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
