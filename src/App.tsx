@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { AccountGate, readSession, type LocalAccount } from '@/components/AccountGate';
 import { Activity, Sparkles } from 'lucide-react';
 import { BottomNav, type TabId } from '@/components/BottomNav';
 import { Home } from '@/components/screens/Home';
@@ -21,6 +22,7 @@ const DEFAULT_SETTINGS: UserSettings = {
 
 export default function App() {
   const [activeTab, setActiveTab] = useState<TabId>('home');
+  const [account, setAccount] = useState<LocalAccount | null>(() => readSession());
   const [snapOpen, setSnapOpen] = useState(false);
   const [upgradeOpen, setUpgradeOpen] = useState(false);
   const [settings, setSettings] = useLocalStorage<UserSettings>('fittrack_settings_v1', DEFAULT_SETTINGS);
@@ -28,6 +30,14 @@ export default function App() {
 
   const showSnap = () => setSnapOpen(true);
   const addFood = () => setActiveTab('diary');
+
+  const enterAccount = (nextAccount: LocalAccount) => {
+    setAccount(nextAccount);
+    setSettings({ ...DEFAULT_SETTINGS, name: nextAccount.name });
+    setActiveTab('home');
+  };
+
+  if (!account) return <AccountGate onContinue={enterAccount} />;
 
   return (
     <div className="min-h-screen bg-forest-950 text-white">
@@ -48,7 +58,7 @@ export default function App() {
         {activeTab === 'diary' && <Diary byMealType={diary.byMealType} totals={diary.totals} onAddFood={diary.addFood} onRemoveEntry={diary.removeEntry} onUpdateGrams={diary.updateGrams} onSnapTrack={showSnap} />}
         {activeTab === 'plans' && <MealPlans />}
         {activeTab === 'progress' && <Progress />}
-        {activeTab === 'profile' && <Profile settings={settings} onUpdate={setSettings} onUpgrade={() => setUpgradeOpen(true)} />}
+        {activeTab === 'profile' && <Profile settings={settings} onUpdate={setSettings} onUpgrade={() => setUpgradeOpen(true)} onSignOut={() => { localStorage.removeItem('fittrack_local_session_v1'); setAccount(null); }} />}
 
         <footer className="mt-10 border-t border-forest-800 pt-4 text-center text-xs text-gray-600">
           <div className="mb-1 flex items-center justify-center gap-1"><Activity size={12}/> Small steps add up.</div>

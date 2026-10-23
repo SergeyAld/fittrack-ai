@@ -8,6 +8,7 @@ interface ProfileProps {
   settings: UserSettings;
   onUpdate: (settings: UserSettings) => void;
   onUpgrade: () => void;
+  onSignOut: () => void;
 }
 
 const ACTIVITY_LEVELS: { id: ActivityLevel; label: string; desc: string }[] = [
@@ -33,7 +34,7 @@ const DIETS: { id: DietPreference; label: string }[] = [
   { id: 'mediterranean', label: 'Mediterranean' },
 ];
 
-export function Profile({ settings, onUpdate, onUpgrade }: ProfileProps) {
+export function Profile({ settings, onUpdate, onUpgrade, onSignOut }: ProfileProps) {
   const [editing, setEditing] = useState<keyof UserSettings | null>(null);
 
   const patch = (p: Partial<UserSettings>) => onUpdate({ ...settings, ...p });
@@ -143,8 +144,9 @@ export function Profile({ settings, onUpdate, onUpgrade }: ProfileProps) {
       </div>
 
       <div className="flex items-center justify-center gap-2 py-4">
-        <LogOut size={16} className="text-gray-600" />
-        <span className="text-xs text-gray-600">Prototype — no account needed</span>
+        <button onClick={() => { if (confirm('Sign out of this local profile? Your saved data will remain on this device.')) onSignOut(); }} className="flex items-center gap-2 rounded-xl border border-[#2a3548] px-4 py-3 text-sm text-slate-300 hover:bg-white/5">
+          <LogOut size={16} /> Sign out
+        </button>
       </div>
 
       {/* Edit sheets */}
